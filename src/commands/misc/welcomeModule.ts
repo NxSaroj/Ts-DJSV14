@@ -47,28 +47,29 @@ export async function run({ interaction }: SlashCommandProps) {
         });
         return;
       });
+  } else {
+    const channel = interaction.options.getChannel("channel");
+    const welcomeMessage =
+      interaction.options.getString("message") ||
+      "Hey {user.username} Welcome to {guild.name}";
+    welcomeConfig
+      .create({
+        guildId: interaction.guildId,
+        channelId: channel?.id,
+        welcomeMessage: welcomeMessage,
+      })
+      .then(() => {
+        interaction.reply({
+          content: `${channel} Has Been Configured For Welcome Messages`,
+        });
+      })
+      .catch((err) => {
+        console.error(`DB Error: \n ${err}`);
+        interaction.reply({
+          content: `DB Error, Try again later`,
+          ephemeral: true,
+        });
+        return;
+      });
   }
-  const channel = interaction.options.getChannel("channel");
-  const welcomeMessage =
-    interaction.options.getString("message") ||
-    "Hey {user.username} Welcome to {guild.name}";
-  welcomeConfig
-    .create({
-      guildId: interaction.guildId,
-      channelId: channel?.id,
-      welcomeMessage: welcomeMessage,
-    })
-    .then(() => {
-      interaction.reply({
-        content: `${channel} Has Been Configured For Welcome Messages`,
-      });
-    })
-    .catch((err) => {
-      console.error(`DB Error: \n ${err}`);
-      interaction.reply({
-        content: `DB Error, Try again later`,
-        ephemeral: true,
-      });
-    });
-  return;
 }
