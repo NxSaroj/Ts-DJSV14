@@ -1,6 +1,6 @@
 {
   "emojiId": [
-    { "name": "xn_tick", "id": "<:xn_tick:1209742516832706642>" },
-    { "name": "xn_wrong", "id": "<:xn_wrong:1211166597297733713>" }
+    { "name": "emoji_right", "id": "emoji_id" },
+    { "name": "emoji_wrong", "id": "emoji_id" }
   ]
 }
