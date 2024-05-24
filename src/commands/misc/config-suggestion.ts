@@ -13,6 +13,11 @@ export async function run({ interaction }: SlashCommandProps) {
   if (!interaction.inCachedGuild()) return;
   if (!interaction.inGuild()) return;
 
+  if (!interaction.member?.permissions.has("ManageGuild"))
+    return await interaction.reply(
+      "`Manage Guild` Permissions is required to execute this command"
+    );
+
   await interaction.deferReply();
 
   const isModuleEnabled = await suggestionConfig.findOne({
