@@ -25,7 +25,6 @@ new CommandKit({
 });
 
 
-
 /**MongoDB and Client Connection */
 connect(process.env.DB_URI)
   .then(() => {
