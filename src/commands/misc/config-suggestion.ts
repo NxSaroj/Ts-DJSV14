@@ -80,9 +80,13 @@ export async function run({ interaction }: SlashCommandProps) {
          
             mCollector?.on("collect", async (message) => {
             const channelId = message.content;
+<<<<<<< HEAD
             console.log(message.content);
             
             mCollector.stop()
+=======
+            messageCollector.stop()
+>>>>>>> 6d4c45efbdc5bc7c8eec6335a2aeef604a24e085
             const channel = interaction.guild.channels.cache.get(channelId);
             if (!channel) {
               await i.followUp({
