@@ -47,12 +47,17 @@ export async function run({ interaction }: SlashCommandProps) {
           : emojiId[1].id,
       }
     )
-    .setColor(interaction.member.displayHexColor || "White")
+    .setColor("White")
     .setThumbnail(interaction.guild.iconURL() || null);
 
   const response = await interaction.editReply({
     embeds: [configEmbed],
     components: [suggestionRow],
+  });
+
+  const mCollector = interaction.channel?.createMessageCollector({
+    time: 60000,
+    filter: (message) => message.author.id === interaction.user.id
   });
 
   const collector = response.createMessageComponentCollector({
@@ -61,8 +66,6 @@ export async function run({ interaction }: SlashCommandProps) {
     filter: (i) => i.user.id == interaction.user.id,
   });
 
-  const messageFilter = (message: import("discord.js").Message) =>
-    message.author.id == interaction.user.id;
 
   collector.on("collect", async (i) => {
     switch (i.values[0]) {
@@ -73,14 +76,13 @@ export async function run({ interaction }: SlashCommandProps) {
             return await interaction.editReply(
               "You can configure it only in a guild channel"
             );
-          await i.editReply("Enter the channelId in chat under next 1 minute");
-          const messageCollector = interaction.channel?.createMessageCollector({
-            time: 60_000,
-            filter: messageFilter,
-          });
-
-          messageCollector.on("collect", async (message) => {
+            await i.editReply("Enter the channelId in chat under next 1 minute");
+         
+            mCollector?.on("collect", async (message) => {
             const channelId = message.content;
+            console.log(message.content);
+            
+            mCollector.stop()
             const channel = interaction.guild.channels.cache.get(channelId);
             if (!channel) {
               await i.followUp({
@@ -89,10 +91,10 @@ export async function run({ interaction }: SlashCommandProps) {
               });
               return;
             }
-            suggestionConfig
+             suggestionConfig
               .create({ guildId: interaction.guildId, channelId: channel.id })
               .then(() => {
-                i.followUp({
+                 i.followUp({
                   embeds: [
                     {
                       description: `${emojiId[0].name} ${channel} Has Been Configured for suggestions`,
@@ -112,10 +114,10 @@ export async function run({ interaction }: SlashCommandProps) {
               });
           });
         } else {
-          suggestionConfig
+          await suggestionConfig
             .deleteMany({ guildId: interaction.guildId })
-            .then(() => {
-              i.editReply("Disabled The Suggestion Module");
+            .then(async () => {
+              await i.editReply("Disabled The Suggestion Module");
             })
             .catch((err) => {
               console.error(`DB Error :  ${err}`);

@@ -1,5 +1,5 @@
 import { CommandKit } from "commandkit";
-import { Client } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import { connect } from "mongoose";
 
 import path from "path";
@@ -8,22 +8,21 @@ dotenv.config();
 
 const client = new Client({
   intents: [
-    "Guilds",
-    "GuildMembers",
-    "MessageContent",
-    "GuildPresences",
-    "GuildVoiceStates",
-    "DirectMessages",
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildVoiceStates,
   ],
 });
 
 new CommandKit({
   client,
   commandsPath: path.join(__dirname, "commands"),
-  eventsPath: path.join(__dirname, 'events'),
+  eventsPath: path.join(__dirname, "events"),
   bulkRegister: true,
 });
-
 
 /**MongoDB and Client Connection */
 connect(process.env.DB_URI)
