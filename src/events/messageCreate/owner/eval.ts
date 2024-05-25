@@ -1,6 +1,6 @@
 import { utils, management, emojiId } from "../../../../config.json";
 import prettyMilliseconds from "pretty-ms";
-export default async function (message: import("discord.js").Message) {
+export default async function (message: import("discord.js").Message, client:import('discord.js').Client) {
   if (message.content.startsWith(`${utils[0].prefix}eval`)) {
     if (message.author.id !== management[0].id)
       return message.channel.send(
