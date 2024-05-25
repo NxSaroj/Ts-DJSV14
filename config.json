@@ -2,5 +2,11 @@
   "emojiId": [
     { "name": "emoji_right", "id": "emoji_id" },
     { "name": "emoji_wrong", "id": "emoji_id" }
+  ], 
+  "management": [
+    { "role": "owner", "id": "1129393606432661575" }
+  ], 
+  "utils": [
+    { "prefix": "." }
   ]
 }
